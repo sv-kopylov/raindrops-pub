@@ -8,7 +8,7 @@ import java.util.function.Consumer;
 
 public class VLayerIterator extends AbstractLayerIterator{
 
-    int width=0, height=0;
+    private int width=0, height=0;
     private final int maxHeight, maxWidth;
 
 
@@ -44,15 +44,34 @@ public class VLayerIterator extends AbstractLayerIterator{
         }
     }
 
+    private boolean hasNext = true;
+
     @Override
     public boolean hasNext() {
-        return (height <maxHeight&& width<maxWidth);
+        return hasNext;
     }
 
     @Override
     public byte next() {
         if(!hasNext()) throw new RuntimeException("Now more bytes");
-        return space[layerNumber][height][width];
+        byte result = space[layerNumber][height][width];
+        if(width<maxWidth-1){
+            width++;
+        } else  if(height<maxHeight-1) {
+            width=0;
+            height++;
+        } else {
+            hasNext=false;
+        }
 
+        return result;
+
+    }
+
+    @Override
+    public void reset() {
+        height=0;
+        width=0;
+        hasNext=true;
     }
 }

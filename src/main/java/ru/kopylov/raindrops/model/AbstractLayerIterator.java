@@ -8,10 +8,10 @@ public abstract class AbstractLayerIterator {
     protected final int layerNumber;
 
     public AbstractLayerIterator(byte[][][] space, int layerNumber) {
-        if((!isLayerExists())||
-                (layerNumber<0)) throw new IllegalArgumentException("Layer number is out of bounds dude");
         this.space = space;
         this.layerNumber = layerNumber;
+        if((!isLayerExists())||
+                (layerNumber<0)) throw new IllegalArgumentException("Layer number is out of bounds dude");
     }
 
     protected abstract boolean isLayerExists();
@@ -24,7 +24,7 @@ public abstract class AbstractLayerIterator {
 
     public abstract byte next();
 
-
+// сумма всех элементов
     public long sum(){
         long result = 0;
         while(hasNext()){
@@ -32,6 +32,9 @@ public abstract class AbstractLayerIterator {
         }
         return result;
     }
+
+//    сброс итератора к началу
+    public abstract void reset();
 
 
 }
