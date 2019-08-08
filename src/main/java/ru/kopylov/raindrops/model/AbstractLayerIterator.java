@@ -11,7 +11,7 @@ public abstract class AbstractLayerIterator {
         this.space = space;
         this.layerNumber = layerNumber;
         if((!isLayerExists())||
-                (layerNumber<0)) throw new IllegalArgumentException("Layer number is out of bounds dude");
+                (layerNumber<0)) throw new IllegalArgumentException("Layer number is out of bounds");
     }
 
     protected abstract boolean isLayerExists();
@@ -30,6 +30,7 @@ public abstract class AbstractLayerIterator {
         while(hasNext()){
             result +=next();
         }
+        reset();
         return result;
     }
 

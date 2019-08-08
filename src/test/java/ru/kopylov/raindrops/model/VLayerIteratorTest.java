@@ -1,14 +1,17 @@
 package ru.kopylov.raindrops.model;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
 
 public class VLayerIteratorTest {
 
-    @Test
-    public void next() {
-        byte[][][] space = new byte[2][2][2];
+    byte[][][] space = new byte[2][2][2];
+
+
+    @Before
+    public void init(){
         space[0][0][0] = 0;
         space[0][0][1] = 1;
         space[0][1][0] = 2;
@@ -18,14 +21,24 @@ public class VLayerIteratorTest {
         space[1][1][0] = 6;
         space[1][1][1] = 7;
 
-        VLayerIterator iter = new VLayerIterator(space, 1);
+    }
+
+    @Test
+    public void next() {
+         VLayerIterator iter = new VLayerIterator(space, 1);
         int cnt=0;
         while (iter.hasNext()){
             cnt++;
-//            System.out.println(iter.next());
+            System.out.println(iter.next());
         }
         assertEquals(4,cnt);
-
-
     }
+    @Test
+    public void sum() {
+        VLayerIterator iter = new VLayerIterator(space, 0);
+        long res = iter.sum();
+        System.out.println(res);
+        assertEquals(6,res);
+    }
+
 }
