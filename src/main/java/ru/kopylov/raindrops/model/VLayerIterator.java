@@ -1,6 +1,7 @@
 package ru.kopylov.raindrops.model;
 
 import java.util.function.Consumer;
+import java.util.function.UnaryOperator;
 
 /**
  * Вертикальный слой (нормаль совпадает или противоположна направлению движения человека)
@@ -13,7 +14,7 @@ public class VLayerIterator extends AbstractLayerIterator{
 
 
 
-    //    протяженность, высота, ширина.
+    //    протяженность - постоянная, изменяются высота и ширина.
     public VLayerIterator(byte[][][] space, int layerNumber) {
         super(space, layerNumber);
         maxHeight = space[0].length;
@@ -36,10 +37,10 @@ public class VLayerIterator extends AbstractLayerIterator{
     }
 
     @Override
-    public void forEach(Consumer consumer) {
+    public void forEach(UnaryOperator<Byte> unaryOperator) {
         for(int i=0; i<maxHeight; i++){
             for(int j=0; j<maxWidth; j++){
-                consumer.accept(space[layerNumber][height][width]);
+                space[layerNumber][i][j] = unaryOperator.apply(space[layerNumber][i][j]);
             }
         }
     }
@@ -73,5 +74,18 @@ public class VLayerIterator extends AbstractLayerIterator{
         height=0;
         width=0;
         hasNext=true;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        for(int i=0; i<maxHeight; i++){
+            for(int j=0; j<maxWidth; j++){
+                sb.append(space[layerNumber][i][j]);
+                sb.append(" ");
+            }
+            sb.append("\n");
+        }
+        return sb.toString();
     }
 }

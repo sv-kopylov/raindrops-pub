@@ -1,6 +1,8 @@
 package ru.kopylov.raindrops.model;
 
 import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.UnaryOperator;
 
 public abstract class AbstractLayerIterator {
 //    протяженность, высота, ширина
@@ -18,7 +20,7 @@ public abstract class AbstractLayerIterator {
 //  Навигация по слою
     public abstract byte get(int x, int y);
 // Применяет операцию ко всем элементам слоя
-    public abstract void forEach(Consumer consumer);
+    public abstract void forEach(UnaryOperator<Byte> consumer);
 
     public abstract boolean hasNext();
 
@@ -33,6 +35,7 @@ public abstract class AbstractLayerIterator {
         reset();
         return result;
     }
+
 
 //    сброс итератора к началу
     public abstract void reset();

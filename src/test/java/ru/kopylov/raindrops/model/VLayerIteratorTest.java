@@ -39,6 +39,20 @@ public class VLayerIteratorTest {
         long res = iter.sum();
         System.out.println(res);
         assertEquals(6,res);
+        System.out.println(iter.toString());
+    }
+
+    @Test
+    public void representation(){
+        AbstractLayerIterator iter = new VLayerIterator(space, 0);
+        System.out.println(iter.toString());
+        iter = new VLayerIterator(space, 1);
+        System.out.println(iter.toString());
+        iter = new HLayerIterator(space, 0);
+        System.out.println(iter.toString());
+        iter = new HLayerIterator(space, 1);
+        System.out.println(iter.toString());
+
     }
 
 }
