@@ -1,7 +1,5 @@
 package ru.kopylov.raindrops.model;
 
-import java.util.Iterator;
-
 public class RainSpace implements Constants{
 //    Пространство разбито на кубики в каждом из которых может быть ноль или одна капля дождя
 //    Измерения: протяженность, высота, ширина
@@ -9,12 +7,19 @@ public class RainSpace implements Constants{
 
 // указатель на верхний слой
     private int topLayerPointer=0;
-//    указатель на слой перед самым носом человека
+//    сам верхний слой
+    private HLayerIterator topLayer= new HLayerIterator(space,topLayerPointer);
+
+//    указатель на слой перед самым носом человека (нужен здесь или в сщности человек?)
     private int frontLayerPointer=0;
 
-// обновление верхнего слоя
-    public void update(){
+    private RandomSeeder randomSeeder = new RandomSeeder();
 
+// обновление верхнего слоя
+    public void updateTopLayer(){
+        randomSeeder.reSeed(topLayer);
+        incrementTopLayerPointer();
+        topLayer.setLayerNumber(topLayerPointer);
     }
 
     private void incrementTopLayerPointer(){
@@ -24,6 +29,4 @@ public class RainSpace implements Constants{
             topLayerPointer=0;
         }
     }
-
-
 }
