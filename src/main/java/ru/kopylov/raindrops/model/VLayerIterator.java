@@ -28,7 +28,7 @@ public class VLayerIterator extends AbstractLayerIterator{
     }
 
     @Override
-    public byte get(int width, int height) {
+    public byte get(int height, int width) {
         if((width< maxWidth)&&(height< maxHeight)) {
             return space[layerNumber][height][width];
         } else {

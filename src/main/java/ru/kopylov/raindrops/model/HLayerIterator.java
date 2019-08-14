@@ -20,7 +20,7 @@ public class HLayerIterator extends AbstractLayerIterator {
     }
 
     @Override
-    public byte get(int width, int lenght) {
+    public byte get(int lenght, int width) {
         if((width< maxWidth)&&(lenght< maxLenght)) {
             return space[lenght][layerNumber][width];
         } else {
