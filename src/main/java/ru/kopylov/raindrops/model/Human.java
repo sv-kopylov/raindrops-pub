@@ -27,6 +27,8 @@ public class Human implements Constants {
 //    капель одинакова во всем верхнем слое, то это допущение не должно как - либо повлиять на результат,
 //    упростит код и немного утяжелит вычисления (вспомнить при оптимизации)
     public void updateFront(VLayerIterator iter){
+        iter.reset();
+        iter.setLayerNumber(position);
         for(int h=0; h<HumanHeight; h++){
             for(int w=0; w<HumanWidth; w++){
                 frontDrops+=iter.get(h, w);
@@ -37,7 +39,7 @@ public class Human implements Constants {
     }
 //   Позиция обновляется таким образом, чтобы над человеком всегда было пятно дождя
     private void updatePosition() {
-        if(position<SpaceLenght){
+        if(position<SpaceLenght()){
             position++;
         } else {
             position=HumanDepth;
@@ -45,7 +47,7 @@ public class Human implements Constants {
     }
 
     public double getCollectedWater(){
-        return (frontDrops + topDrops)*DropWeight;
+        return (frontDrops + topDrops)* DropSize;
     }
 
 }

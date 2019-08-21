@@ -25,7 +25,7 @@ public class HLayerIteratorTest {
     public void get() {
         HLayerIterator iter = new HLayerIterator(space, 0);
         assertEquals(0, iter.get(0, 0));
-        assertEquals(1, iter.get(1, 0));
+        assertEquals(4, iter.get(1, 0));
 
     }
 
@@ -33,9 +33,10 @@ public class HLayerIteratorTest {
     public void forEach() {
         HLayerIterator iter = new HLayerIterator(space, 0);
         System.out.println(iter.toString());
+
         iter.forEach( x->x=(byte)(x+1));
         assertEquals(1, iter.get(0, 0));
-        assertEquals(2, iter.get(1, 0));
+        assertEquals(5, iter.get(1, 0));
         System.out.println(iter.toString());
 
     }
