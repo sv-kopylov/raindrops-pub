@@ -31,7 +31,7 @@ public class Application implements Constants {
             DropFallingSpeed = (int)(DropSize*622 - 111);
     }
 
-    public static void launch(){
+    public void launch(){
         long time = 0;
         RainSpace rainSpace = new RainSpace();
         Human human = new Human();
@@ -40,7 +40,7 @@ public class Application implements Constants {
 
         int distancePassed = 0;
 //        Заполняем пространство дождем
-        for(int i=0;i<SpaceHeight;i++){
+        for(int i=0;i<SpaceHeight();i++){
             rainSpace.updateTopLayer();
         }
 //          Начинаем эксперимент

@@ -17,6 +17,8 @@ public class ConstantsTest {
 
     }
 
+
+
     static int DropFallingSpeed(double DropSize){
         if(DropSize>=0.5 && DropSize<5){
             return (int)(DropSize*622 - 111);
@@ -28,4 +30,10 @@ public class ConstantsTest {
     }
 
 
+    @Test
+    public void spaceLenght() {
+        Constants cstns = new Constants() {
+        };
+        System.out.println(cstns.SpaceLenght());
+    }
 }

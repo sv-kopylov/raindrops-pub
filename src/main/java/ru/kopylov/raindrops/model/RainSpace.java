@@ -3,7 +3,7 @@ package ru.kopylov.raindrops.model;
 public class RainSpace implements Constants{
 //    Пространство разбито на кубики в каждом из которых может быть ноль или одна капля дождя
 //    Измерения: протяженность, высота, ширина
-    private byte[][][] space = new byte[SpaceLenght()][SpaceHeight][SpaceWidth];
+    private byte[][][] space = new byte[SpaceLenght()][SpaceHeight()][SpaceWidth()];
 
 // указатель на верхний слой
     private int topLayerPointer=0;
@@ -26,7 +26,7 @@ public class RainSpace implements Constants{
     }
 
     private void incrementTopLayerPointer(){
-        if(topLayerPointer<SpaceHeight-1){
+        if(topLayerPointer<SpaceHeight()-1){
             topLayerPointer++;
         } else {
             topLayerPointer=0;

@@ -11,7 +11,7 @@ public class Human implements Constants {
 //    вычисляется количество капель в пятне слоя аккурат над человеком
     public void updateTop(HLayerIterator iter){
         for(int d = position - HumanDepth; d<position; d++){
-            for(int w=0; w<SpaceWidth; w++){
+            for(int w=0; w<SpaceWidth(); w++){
                 topDrops+=iter.get(d, w);
             }
         }
