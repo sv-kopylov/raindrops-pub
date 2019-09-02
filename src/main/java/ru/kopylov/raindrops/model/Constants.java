@@ -5,7 +5,7 @@ package ru.kopylov.raindrops.model;
  */
 public interface Constants {
 //    TODO сделать хелпер для вычисляемых значений
-    //    размер капли, выражен поперечным сечением от 0.1 до 7 мм
+    //    размер капли, выражен поперечным сечением от 0.5 до 7 мм
 //    https://ru.wikipedia.org/wiki/%D0%94%D0%BE%D0%B6%D0%B4%D1%8C#%D0%94%D0%BE%D0%B6%D0%B4%D0%B5%D0%B2%D1%8B%D0%B5_%D0%BA%D0%B0%D0%BF%D0%BB%D0%B8
     double DropSize = 3.0;
 

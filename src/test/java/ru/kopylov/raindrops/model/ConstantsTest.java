@@ -1,6 +1,7 @@
 package ru.kopylov.raindrops.model;
 
 import org.junit.Test;
+import ru.kopylov.raindrops.application.RainDensity;
 
 import static org.junit.Assert.*;
 
@@ -39,7 +40,7 @@ public class ConstantsTest {
 
     @Test
     public void probability(){
-        double intensity = 5.0/360.0;
+        double intensity = 0.25/3600.0;
         double dropDiameter = 1.0; // mm
         double r = (dropDiameter/2.0)*(1.0/100.0);
         double dropVolume = (4.0/3.0)*Math.PI*r*r*r;
@@ -54,9 +55,21 @@ public class ConstantsTest {
         System.out.printf("time per layer: %.8f sec\n", timePerLayer);
         System.out.printf("water in one  layer: %.8f liters \n", waterPer1m2);
         System.out.printf("drops in one  layer: %.8f \n", dropsIn1m2);
+    }
 
-
-
+    @Test
+    public void estimation(){
+        System.out.printf("%.8f \n", 0.25/3600);
+        System.out.printf("%.8f \n", 100.0/3600);
 
     }
+    @Test
+    public void cmp(){
+        double intensity = 10.25/3600.0;
+        double dropDiameter = 0.5; // mm
+        RainDensity next = new RainDensity(intensity, dropDiameter);
+        System.out.printf("drops in one  layer: %.8f \n", next.getDropsIn1m2());
+    }
+
+
 }
