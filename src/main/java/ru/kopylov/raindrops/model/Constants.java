@@ -1,5 +1,7 @@
 package ru.kopylov.raindrops.model;
 
+import ru.kopylov.raindrops.util.Helper;
+
 /**
  * Параметры эксперимента
  */
@@ -24,15 +26,8 @@ public interface Constants {
         после 5 скорость опять снижается (допустим с той же интенсивностью)
 
 */
-     default int DropFallingSpeed(){
-         if(DropSize>=0.5 && DropSize<5){
-             return (int)(DropSize*622 - 111);
-         } else if (DropSize>=5 && DropSize<=7){
-             return (int)((5 - (DropSize-5))*622 - 111);
-         } else {
-             throw new RuntimeException("incorrect drop size");
-         }
-    }
+int DropFallingSpeed = Helper.DropFallingSpeed(DropSize);
+
 
 
 /*  скорость перемещеня человека (горизонтально)
@@ -87,8 +82,10 @@ public interface Constants {
      double vLayrsPerMove = SpaceHeight() / hLayrsPerMove ; // количество горизонтальных смещений, за которое заполняется вертикальный слой
      */
     default int SpaceLenght(){
-        return (int)(SpaceHeight()/((double)DropFallingSpeed()/HumanSpeed))+1+HumanDepth;
+        return (int)(SpaceHeight()/((double)DropFallingSpeed/HumanSpeed))+1+HumanDepth;
     }
+
+//    int SpaceLenght = Helper.SpaceLenght();
 
 
 

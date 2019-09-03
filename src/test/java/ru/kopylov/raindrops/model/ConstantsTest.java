@@ -41,7 +41,7 @@ public class ConstantsTest {
     @Test
     public void probability(){
         double intensity = 0.25/3600.0;
-        double dropDiameter = 1.0; // mm
+        double dropDiameter = 1.1; // mm
         double r = (dropDiameter/2.0)*(1.0/100.0);
         double dropVolume = (4.0/3.0)*Math.PI*r*r*r;
         double dropSpeed = DropFallingSpeed(dropDiameter); //1775 см/сек
