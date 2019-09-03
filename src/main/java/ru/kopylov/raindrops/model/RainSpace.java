@@ -1,9 +1,10 @@
 package ru.kopylov.raindrops.model;
 
-public class RainSpace implements Constants{
+public class RainSpace {
+    InputDataSet ds = InputDataSet.getInstance();
 //    Пространство разбито на кубики в каждом из которых может быть ноль или одна капля дождя
 //    Измерения: протяженность, высота, ширина
-    private byte[][][] space = new byte[SpaceLenght()][SpaceHeight()][SpaceWidth()];
+    private byte[][][] space = new byte[ds.getSpaceLenght()][ds.getSpaceHeight()][ds.getSpaceWidth()];
 
 // указатель на верхний слой
     private int topLayerPointer=0;
@@ -26,7 +27,7 @@ public class RainSpace implements Constants{
     }
 
     private void incrementTopLayerPointer(){
-        if(topLayerPointer<SpaceHeight()-1){
+        if(topLayerPointer<ds.getSpaceHeight()-1){
             topLayerPointer++;
         } else {
             topLayerPointer=0;

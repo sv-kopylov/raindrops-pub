@@ -1,8 +1,9 @@
 package ru.kopylov.raindrops.model;
 
-public class Human implements Constants {
+public class Human {
+    InputDataSet ds = InputDataSet.getInstance();
 //    позиция указывает на слой перед самым носом человека
-    private int position = HumanDepth;
+    private int position = ds.getHumanDepth();
 //    количество капель, собранных человеком всего
 
     private long topDrops = 0;
@@ -10,8 +11,8 @@ public class Human implements Constants {
 
 //    вычисляется количество капель в пятне слоя аккурат над человеком
     public void updateTop(HLayerIterator iter){
-        for(int d = position - HumanDepth; d<position; d++){
-            for(int w=0; w<SpaceWidth(); w++){
+        for(int d = position - ds.getHumanDepth(); d<position; d++){
+            for(int w=0; w<ds.getSpaceWidth(); w++){
                 topDrops+=iter.get(d, w);
             }
         }
@@ -29,8 +30,8 @@ public class Human implements Constants {
     public void updateFront(VLayerIterator iter){
         iter.reset();
         iter.setLayerNumber(position);
-        for(int h=0; h<HumanHeight; h++){
-            for(int w=0; w<HumanWidth; w++){
+        for(int h=0; h<ds.getHumanHeight(); h++){
+            for(int w=0; w<ds.getHumanWidth(); w++){
                 frontDrops+=iter.get(h, w);
             }
         }
@@ -39,15 +40,16 @@ public class Human implements Constants {
     }
 //   Позиция обновляется таким образом, чтобы над человеком всегда было пятно дождя
     private void updatePosition() {
-        if(position<SpaceLenght()){
+        if(position<ds.getSpaceLenght()){
             position++;
         } else {
-            position=HumanDepth;
+            position=ds.getHumanDepth();
         }
     }
 
+//    TODO перевести в литры
     public double getCollectedWater(){
-        return (frontDrops + topDrops)* DropSize;
+        return (frontDrops + topDrops);
     }
 
 }
