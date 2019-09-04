@@ -3,13 +3,23 @@ package ru.kopylov.raindrops.model;
 import ru.kopylov.raindrops.util.Helper;
 
 /**
- * набор переменных для эксперимента, делятся на три типа
+ * набор переменных для эксперимента,
+ * один датасет на программу, сингельтон
+ * переменные делятся на три типа
  * 1 - финальная без сеттера - не может меняться на протяжении эксперимента
  * 2 - производная - зависит от других констант, своего сеттера не имеют, обновляется при обновлении констант 3 го типа
  * 3 - изменяемые - могут меняться от итерации к итерации
  */
 
 public class InputDataSet {
+
+    private static InputDataSet instance = new InputDataSet();
+    private InputDataSet(){}
+    public static InputDataSet getInstance(){
+        return instance;
+    }
+
+
 
    /**
     *  размер капли, выражен поперечным сечением от 0.5 до 7 мм
@@ -130,8 +140,8 @@ public class InputDataSet {
      */
 
     private double DropsInLayer =
-            SpaceLenght*(1/100)
-            *SpaceWidth*(1/00)
+            SpaceLenght*(1.0/100)
+            *SpaceWidth*(1.0/100)
             *Helper.DropsInLayer(RainIntensyty, DropSize); // не финальная но нет сеттера
 
 //    сеттеры
@@ -153,7 +163,7 @@ public class InputDataSet {
 
     private void updateDerivatives(){
         DropFallingSpeed = Helper.DropFallingSpeed(DropSize);
-        DropsInLayer = SpaceLenght*(1/100)*SpaceWidth*(1/00)*Helper.DropsInLayer(RainIntensyty, DropSize);
+        DropsInLayer = SpaceLenght*(1.0/100)*SpaceWidth*(1.0/100)*Helper.DropsInLayer(RainIntensyty, DropSize);
         ProbabilityDropInCell = Helper.ProbabilityDropInCell();
     }
 

@@ -33,9 +33,15 @@ public class ConstantsTest {
 
     @Test
     public void spaceLenght() {
-        Constants cstns = new Constants() {
-        };
-        System.out.println(cstns.SpaceLenght());
+      InputDataSet ds = InputDataSet.getInstance();
+      ds.setHumanSpeed(1200);
+      ds.setDropSize(1.0);
+      int a = ds.getSpaceLenght();
+      int b = ds.getDropFallingSpeed();
+      ds.setHumanSpeed(600);
+       ds.setDropSize(2.0);
+      assertEquals(a, ds.getSpaceLenght());
+      assertNotEquals(b, ds.getDropFallingSpeed());
     }
 
     @Test
