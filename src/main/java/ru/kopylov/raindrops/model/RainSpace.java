@@ -6,10 +6,14 @@ public class RainSpace {
 //    Измерения: протяженность, высота, ширина
     private byte[][][] space = new byte[ds.getSpaceLenght()][ds.getSpaceHeight()][ds.getSpaceWidth()];
 
+//    представление пространства в горизонтальных  слоях
+    private HLayerIterator[] hLayers = new HLayerIterator[ds.getSpaceHeight()];
+
+//    представление пространства в вертикальных  слоях
+    private VLayerIterator[] vLayers = new VLayerIterator[ds.getSpaceLenght()];
+
 // указатель на верхний слой
     private int topLayerPointer=0;
-//    сам верхний слой
-    private HLayerIterator topLayer= new HLayerIterator(space,topLayerPointer);
 
 //    все пространство инкапсулировано но всякие его может использовать через интерфейс вертикального слоя???
     private  VLayerIterator frontVLayer = new VLayerIterator(space, 0);
@@ -19,11 +23,19 @@ public class RainSpace {
 
     private RandomSeeder randomSeeder = new RandomSeeder();
 
-// обновление верхнего слоя
+    public RainSpace() {
+        for(int i = 0; i<ds.getSpaceHeight(); i++){
+            hLayers[i] = new HLayerIterator(space, i);
+        }
+        for(int i=0; i<ds.getSpaceLenght(); i++){
+            vLayers[i]=new VLayerIterator(space, i);
+        }
+    }
+
+    // обновление верхнего слоя
     public void updateTopLayer(){
-        randomSeeder.reSeed(topLayer);
+        randomSeeder.reSeed(getTopLayer());
         incrementTopLayerPointer();
-        topLayer.setLayerNumber(topLayerPointer);
     }
 
     private void incrementTopLayerPointer(){
@@ -35,7 +47,7 @@ public class RainSpace {
     }
 
     public HLayerIterator getTopLayer() {
-        return topLayer;
+        return hLayers[topLayerPointer];
     }
 
     public VLayerIterator getFrontVLayer() {
