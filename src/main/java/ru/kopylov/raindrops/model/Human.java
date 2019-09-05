@@ -29,7 +29,7 @@ public class Human {
 //    упростит код и немного утяжелит вычисления (вспомнить при оптимизации)
     public void updateFront(VLayerIterator iter){
         iter.reset();
-        iter.setLayerNumber(position);
+//        iter.setLayerNumber(position);
         for(int h=0; h<ds.getHumanHeight(); h++){
             for(int w=0; w<ds.getHumanWidth(); w++){
                 frontDrops+=iter.get(h, w);

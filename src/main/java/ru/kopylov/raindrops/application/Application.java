@@ -35,7 +35,7 @@ public class Application {
             if(innerCounter>=speedDifference){
                 distancePassed++;
                 innerCounter=0;
-                human.updateFront(rainSpace.getFrontVLayer());
+//                human.updateFront(rainSpace.getFrontVLayer());
                 logger.trace(human.getCollectedWater());
             }
 //            эксперимент завершен, сбор данных

@@ -2,6 +2,7 @@ package ru.kopylov.raindrops.model;
 
 public class RainSpace {
     InputDataSet ds = InputDataSet.getInstance();
+
 //    Пространство разбито на кубики в каждом из которых может быть ноль или одна капля дождя
 //    Измерения: протяженность, высота, ширина
     private byte[][][] space = new byte[ds.getSpaceLenght()][ds.getSpaceHeight()][ds.getSpaceWidth()];
@@ -14,12 +15,6 @@ public class RainSpace {
 
 // указатель на верхний слой
     private int topLayerPointer=0;
-
-//    все пространство инкапсулировано но всякие его может использовать через интерфейс вертикального слоя???
-    private  VLayerIterator frontVLayer = new VLayerIterator(space, 0);
-
-//    указатель на слой перед самым носом человека (нужен здесь или в сщности человек?)
-    private int frontLayerPointer=0;
 
     private RandomSeeder randomSeeder = new RandomSeeder();
 
@@ -34,8 +29,10 @@ public class RainSpace {
 
     // обновление верхнего слоя
     public void updateTopLayer(){
-        randomSeeder.reSeed(getTopLayer());
         incrementTopLayerPointer();
+        getTopLayer().resetToZero();
+        randomSeeder.reSeed(getTopLayer());
+
     }
 
     private void incrementTopLayerPointer(){
@@ -50,7 +47,12 @@ public class RainSpace {
         return hLayers[topLayerPointer];
     }
 
-    public VLayerIterator getFrontVLayer() {
-        return frontVLayer;
+    public VLayerIterator getFrontVLayer(int pointer) {
+        if(pointer>=0&&pointer<ds.getSpaceLenght()){
+            return vLayers[pointer];
+        } else {
+            throw new IllegalArgumentException("vLayer index of bound");
+        }
+
     }
 }

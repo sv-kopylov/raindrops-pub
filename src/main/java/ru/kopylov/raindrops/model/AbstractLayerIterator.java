@@ -41,6 +41,26 @@ public abstract class AbstractLayerIterator {
     public abstract void reset();
 
 
+    public abstract void resetToZero();
+    public abstract void set(int x, int y, byte value);
+    public abstract void addPair(int x, int y);
 
+// imutable
+    public static class Pair{
+        private int x;
+        private int y;
 
+        public Pair(int x, int y) {
+            this.x = x;
+            this.y = y;
+        }
+
+        public int getX() {
+            return x;
+        }
+
+        public int getY() {
+            return y;
+        }
+    }
 }
