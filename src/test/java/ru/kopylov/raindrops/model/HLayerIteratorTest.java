@@ -1,5 +1,6 @@
 package ru.kopylov.raindrops.model;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -54,22 +55,42 @@ public class HLayerIteratorTest {
 
     @Test
     public void sum() {
-        HLayerIterator iter = new HLayerIterator(space, 0);
-        long res = iter.sum();
-        System.out.println(res);
-//        assertEquals(6,res);
+        byte[][][] space = new byte[5][1][5];
+        HLayerIterator iterator = new HLayerIterator(space, 0);
+        InputDataSet ds = InputDataSet.getInstance();
+        ds.setDropSize(1.2);
+        ds.setRainIntensyty(50);
+        RandomSeeder rs = new RandomSeeder();
+        rs.reSeed(iterator);
     }
 
 
     @Test
     public void reset() {
         HLayerIterator iter = new HLayerIterator(space, 0);
-
         while (iter.hasNext){
             iter.next();
         }
         assertTrue(!iter.hasNext());
         iter.reset();
         assertTrue(iter.hasNext);
+    }
+
+    @Test
+    public void clean() {
+        byte[][][] space = new byte[5][1][5];
+        HLayerIterator iterator = new HLayerIterator(space, 0);
+        InputDataSet ds = InputDataSet.getInstance();
+        ds.setDropSize(1.2);
+        ds.setRainIntensyty(50);
+
+        System.out.println(iterator.toString());
+        RandomSeeder rs = new RandomSeeder();
+        rs.reSeed(iterator);
+        System.out.println(iterator.toString());
+        iterator.clean();
+        System.out.println(iterator.toString());
+        long res = iterator.sum();
+        assertEquals(0, res);
     }
 }

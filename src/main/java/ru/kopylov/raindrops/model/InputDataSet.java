@@ -106,7 +106,8 @@ public class InputDataSet {
     /**
      * Интенсивность дождя колеблется от 0,25 мм/ч (моросящий дождь) до 100 мм/ч (сильнейший ливень).
      * от нее зависит вероятность образования капель в верхнем слое.
-     * В конструкторе преобразуется в мм/сек так дальше и используется
+     * В конструкторе и в сеттере преобразуется в мм/сек так дальше и используется
+     *
      */
     private double RainIntensyty;
 
@@ -162,7 +163,7 @@ public class InputDataSet {
     }
 
     public void setRainIntensyty(double rainIntensyty) {
-        RainIntensyty = rainIntensyty;
+        RainIntensyty = rainIntensyty/3600;
         updateDerivatives();
     }
 

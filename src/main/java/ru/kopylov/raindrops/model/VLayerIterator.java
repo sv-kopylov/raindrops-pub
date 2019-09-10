@@ -77,7 +77,7 @@ public class VLayerIterator extends AbstractLayerIterator{
     }
 
     @Override
-    public void resetToZero() {
+    public void clean() {
 //        empty implementation
     }
 

@@ -30,7 +30,7 @@ public class RainSpace {
     // обновление верхнего слоя
     public void updateTopLayer(){
         incrementTopLayerPointer();
-        getTopLayer().resetToZero();
+        getTopLayer().clean();
         randomSeeder.reSeed(getTopLayer());
 
     }

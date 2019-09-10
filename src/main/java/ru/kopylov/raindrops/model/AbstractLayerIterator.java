@@ -41,7 +41,7 @@ public abstract class AbstractLayerIterator {
     public abstract void reset();
 
 
-    public abstract void resetToZero();
+    public abstract void clean();
     public abstract void set(int x, int y, byte value);
     public abstract void addPair(int x, int y);
 

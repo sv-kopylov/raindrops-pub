@@ -79,7 +79,7 @@ public class HLayerIterator extends AbstractLayerIterator {
     }
 
     @Override
-    public void resetToZero() {
+    public void clean() {
         for(Pair p: cellsWithDrops){
             set(p.getX(), p.getY(),(byte)0);
         }
@@ -103,4 +103,13 @@ public class HLayerIterator extends AbstractLayerIterator {
         }
         return sb.toString();
     }
+
+    public int getMaxLenght() {
+        return maxLenght;
+    }
+
+    public int getMaxWidth() {
+        return maxWidth;
+    }
+
 }
