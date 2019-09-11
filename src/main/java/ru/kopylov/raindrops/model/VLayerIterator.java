@@ -77,6 +77,21 @@ public class VLayerIterator extends AbstractLayerIterator{
     }
 
     @Override
+    public void clean() {
+//        empty implementation
+    }
+
+    @Override
+    public void set(int x, int y, byte value) {
+//        empty implementation
+    }
+
+    @Override
+    public void addPair(int x, int y) {
+//        empty implementation
+    }
+
+    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         for(int i=0; i<maxHeight; i++){

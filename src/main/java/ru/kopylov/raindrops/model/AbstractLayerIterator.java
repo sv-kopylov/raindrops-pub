@@ -7,7 +7,7 @@ import java.util.function.UnaryOperator;
 public abstract class AbstractLayerIterator {
 //    протяженность, высота, ширина
     protected final byte[][][] space;
-    protected int layerNumber;
+    protected final int layerNumber;
 
     public AbstractLayerIterator(byte[][][] space, int layerNumber) {
         this.space = space;
@@ -40,12 +40,27 @@ public abstract class AbstractLayerIterator {
 //    сброс итератора к началу
     public abstract void reset();
 
-    public void setLayerNumber(int layerNumber){
-        if((!isLayerExists())||
-                (layerNumber<0)) throw new IllegalArgumentException("Layer number is out of bounds");
-        reset();
-        this.layerNumber=layerNumber;
+
+    public abstract void clean();
+    public abstract void set(int x, int y, byte value);
+    public abstract void addPair(int x, int y);
+
+// imutable
+    public static class Pair{
+        private int x;
+        private int y;
+
+        public Pair(int x, int y) {
+            this.x = x;
+            this.y = y;
+        }
+
+        public int getX() {
+            return x;
+        }
+
+        public int getY() {
+            return y;
+        }
     }
-
-
 }

@@ -23,4 +23,12 @@ public class RainSpaceTest {
         }
     }
 
+    @Test
+    public void updateTopLayer() {
+        InputDataSet ds = InputDataSet.getInstance();
+        RainSpace rs = new RainSpace();
+        for(int i=0; i<ds.getSpaceHeight()+2; i++){
+            rs.updateTopLayer();
+        }
+    }
 }

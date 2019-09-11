@@ -1,11 +1,13 @@
 package ru.kopylov.raindrops.model;
 
-import java.util.function.Consumer;
+import java.util.ArrayList;
 import java.util.function.UnaryOperator;
 
 public class HLayerIterator extends AbstractLayerIterator {
     private int width=0, lenght=0;
     private final int maxLenght, maxWidth;
+
+    private ArrayList<Pair> cellsWithDrops = new ArrayList<>();
 
     //    высота - постоянная, изменяются протяженность и ширина.
     public HLayerIterator(byte[][][] space, int layerNumber) {
@@ -23,6 +25,15 @@ public class HLayerIterator extends AbstractLayerIterator {
     public byte get(int lenght, int width) {
         if((width< maxWidth)&&(lenght< maxLenght)) {
             return space[lenght][layerNumber][width];
+        } else {
+            throw new IllegalArgumentException("Index of bound: lenght - "+lenght +" width - "+width);
+        }
+    }
+
+    @Override
+    public void set(int lenght, int width, byte value) {
+        if((width< maxWidth)&&(lenght< maxLenght)) {
+            space[lenght][layerNumber][width] = value;
         } else {
             throw new IllegalArgumentException("Index of bound: lenght - "+lenght +" width - "+width);
         }
@@ -65,7 +76,19 @@ public class HLayerIterator extends AbstractLayerIterator {
         lenght=0;
         width=0;
         hasNext=true;
+    }
 
+    @Override
+    public void clean() {
+        for(Pair p: cellsWithDrops){
+            set(p.getX(), p.getY(),(byte)0);
+        }
+        cellsWithDrops.clear();
+    }
+
+    @Override
+    public void addPair(int lenght, int width) {
+        cellsWithDrops.add(new Pair(lenght,width));
     }
 
     @Override
@@ -80,4 +103,13 @@ public class HLayerIterator extends AbstractLayerIterator {
         }
         return sb.toString();
     }
+
+    public int getMaxLenght() {
+        return maxLenght;
+    }
+
+    public int getMaxWidth() {
+        return maxWidth;
+    }
+
 }

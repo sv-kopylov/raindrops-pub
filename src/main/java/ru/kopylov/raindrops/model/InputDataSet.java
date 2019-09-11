@@ -1,6 +1,13 @@
 package ru.kopylov.raindrops.model;
 
+import org.apache.log4j.Logger;
+import ru.kopylov.raindrops.application.Application;
 import ru.kopylov.raindrops.util.Helper;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.Properties;
 
 /**
  * набор переменных для эксперимента,
@@ -12,9 +19,9 @@ import ru.kopylov.raindrops.util.Helper;
  */
 
 public class InputDataSet {
-
+    public static Logger logger = Logger.getLogger(InputDataSet.class);
     private static InputDataSet instance = new InputDataSet();
-    private InputDataSet(){}
+
     public static InputDataSet getInstance(){
         return instance;
     }
@@ -30,7 +37,7 @@ public class InputDataSet {
     /**
      *     дистанция эксперимента в сантиметрах
      */
-    private final int Distance = 1000;
+    private final int Distance;
 
     /**
      * cкорость падения капель
@@ -63,21 +70,21 @@ public class InputDataSet {
      Вертикальная проекция человека, поверхностное гугление не дало результатов,
      поэтому за высоту беру рост немного меньше своего 160 см ()
      */
-    private final int HumanHeight = 160;
-    private final int HumanWidth = 48;
-    private final int HumanDepth = 20;
+    private final int HumanHeight;
+    private final int HumanWidth;
+    private final int HumanDepth;
 
 //    **** Размерность пространства для эксперимента *****
 
     /**
      * минимальная высота пространства на одну единицу выше человека (в верхнем горизонтальном слое будут генерироваться капли, которые будут падать через все нижние слои)
      */
-    private final int SpaceHeight = HumanHeight+1;
+    private final int SpaceHeight;
 
     /**
      * минимальная ширина пространства равна ширине человека
      */
-    private final int SpaceWidth = HumanWidth;
+    private final int SpaceWidth;
 
     /**
      *  длина пространста это тоже измерение, что и глубина человека, его величина должна быть такой,
@@ -92,15 +99,17 @@ public class InputDataSet {
      *  За одно перемещение человека обновляется 1220/61 = 20 горизонтальных слоев.
      *  Для обновления всех горизонтальных слоев потребуется 161/20 + 1 = 9 перемещений.
      */
-    private final int SpaceLenght = Helper.SpaceLenght(SpaceHeight, DropFallingSpeed, HumanSpeed, HumanDepth);
+    private final int SpaceLenght;
 
 
 
     /**
      * Интенсивность дождя колеблется от 0,25 мм/ч (моросящий дождь) до 100 мм/ч (сильнейший ливень).
      * от нее зависит вероятность образования капель в верхнем слое.
+     * В конструкторе и в сеттере преобразуется в мм/сек так дальше и используется
+     *
      */
-    private double RainIntensyty = 50.0/3600;
+    private double RainIntensyty;
 
 
     /**
@@ -139,10 +148,7 @@ public class InputDataSet {
      * а вычислить количество капель и разбросать их равномерно по слою, будет ли это натяжкой ? - нет)
      */
 
-    private double DropsInLayer =
-            SpaceLenght*(1.0/100)
-            *SpaceWidth*(1.0/100)
-            *Helper.DropsInLayer(RainIntensyty, DropSize); // не финальная но нет сеттера
+    private double DropsInLayer; // не финальная но нет сеттера
 
 //    сеттеры
 
@@ -157,7 +163,7 @@ public class InputDataSet {
     }
 
     public void setRainIntensyty(double rainIntensyty) {
-        RainIntensyty = rainIntensyty;
+        RainIntensyty = rainIntensyty/3600;
         updateDerivatives();
     }
 
@@ -222,4 +228,54 @@ public class InputDataSet {
     public double getDropsInLayer() {
         return DropsInLayer;
     }
+
+    private InputDataSet(){
+        Properties ppts = new Properties();
+        try(FileInputStream fis = new FileInputStream("model.properties")){
+            ppts.load(fis);
+        } catch (FileNotFoundException e) {
+            logger.error("model properties file not found");
+        } catch (IOException e) {
+            logger.error(e.getMessage() );
+        }
+        for(Object key: ppts.keySet()){
+            logger.debug((String) key+" = " +ppts.get(key));
+        }
+
+        this.Distance = getIntProperty(ppts, "Distance");
+        this.DropSize = getDoubleProperty(ppts, "DropSize");
+        this.HumanWidth = getIntProperty(ppts, "HumanWidth");
+        this.HumanDepth = getIntProperty(ppts, "HumanDepth");
+        this.HumanHeight = getIntProperty(ppts, "HumanHeight");
+        this.RainIntensyty = getDoubleProperty(ppts, "RainIntensyty")/3600;
+        this.HumanSpeed = getIntProperty(ppts, "HumanSpeed");
+
+
+        this.SpaceHeight = HumanHeight+1;
+        this.SpaceWidth = HumanWidth;
+        this.SpaceLenght = Helper.SpaceLenght(SpaceHeight, DropFallingSpeed, HumanSpeed, HumanDepth);
+        this.DropsInLayer = SpaceLenght*(1.0/100)
+                            *SpaceWidth*(1.0/100)
+                            *Helper.DropsInLayer(RainIntensyty, DropSize);
+
+    }
+
+    private int getIntProperty(Properties ppts, String key){
+        String value = ppts.getProperty(key);
+        if(value!=null){
+            return Integer.parseInt(value);
+        } else {
+            throw new RuntimeException("Property not found, key: "+ key);
+        }
+    }
+
+    private double getDoubleProperty(Properties ppts, String key){
+        String value = ppts.getProperty(key);
+        if(value!=null){
+            return Double.parseDouble(value);
+        } else {
+            throw new RuntimeException("Property not found, key: "+ key);
+        }
+    }
+
 }
