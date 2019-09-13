@@ -45,6 +45,9 @@ public abstract class AbstractLayerIterator {
     public abstract void set(int x, int y, byte value);
     public abstract void addPair(int x, int y);
 
+//    Вычисление суммы части слоя за позицией
+    public abstract long spotSum(int зosition, int behind);
+
 // imutable
     public static class Pair{
         private int x;
@@ -63,4 +66,37 @@ public abstract class AbstractLayerIterator {
             return y;
         }
     }
+    public static class Circle {
+        private int max;
+        private int position;
+
+        public Circle(int max, int position) {
+            if (position >= max) {
+                throw new IllegalArgumentException("position mmust not be bigger tham max");
+            }
+            this.max = max;
+            this.position = position;
+        }
+
+        public int current(){
+            return position;
+        }
+
+        public int next() {
+            position++;
+            if (position >= max) {
+                position = 0;
+            }
+            return position;
+        }
+
+        public int previous() {
+            position--;
+            if (position < 0) {
+                position = max - 1;
+            }
+            return position;
+        }
+    }
+
 }
