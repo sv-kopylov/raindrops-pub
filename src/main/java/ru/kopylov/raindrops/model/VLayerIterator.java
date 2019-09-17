@@ -82,8 +82,12 @@ public class VLayerIterator extends AbstractLayerIterator{
     }
 
     @Override
-    public void set(int x, int y, byte value) {
-//        empty implementation
+    public void set(int height, int width, byte value) {
+        if ((width < maxWidth) && (height < maxHeight)) {
+            space[layerNumber][height][width] = value;
+        } else {
+            throw new IllegalArgumentException("Index of bound: height - " + height + " width - " + width);
+        }
     }
 
     @Override
@@ -102,5 +106,24 @@ public class VLayerIterator extends AbstractLayerIterator{
             sb.append("\n");
         }
         return sb.toString();
+    }
+
+    @Override
+    public long spotSum(int hPosition, int hLower) {
+        long result = 0;
+        Circle circle = new Circle(maxHeight, hPosition);
+        for (int i = 0; i < hLower; i++) {
+            result+=wideArraySum(circle.previous());
+        }
+        System.out.println("Spot sum end: result = "+ result);
+        return result;
+    }
+
+    private long wideArraySum(int positionInHeight) {
+        long sum = 0;
+        for (int i = 0; i < maxWidth; i++) {
+            sum += space[layerNumber][positionInHeight][i];
+        }
+        return sum;
     }
 }

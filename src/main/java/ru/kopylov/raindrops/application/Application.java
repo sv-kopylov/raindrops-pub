@@ -36,7 +36,7 @@ public class Application {
                 distancePassed++;
                 innerCounter=0;
 //                human.updateFront(rainSpace.getFrontVLayer());
-                logger.trace(human.getCollectedWater());
+                logger.trace(human.getCollectedDrops());
             }
 //            эксперимент завершен, сбор данных
 

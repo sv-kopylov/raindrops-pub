@@ -20,7 +20,6 @@ public class Human {
     public void updateFront(VLayerIterator iter, int topLayerPointer){
         frontDrops+=iter.spotSum(topLayerPointer, ds.getHumanHeight());
     }
-
     public double getCollectedDrops(){
         return (frontDrops + topDrops);
     }
