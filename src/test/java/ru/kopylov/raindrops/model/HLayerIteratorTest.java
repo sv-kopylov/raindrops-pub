@@ -93,4 +93,40 @@ public class HLayerIteratorTest {
         long res = iterator.sum();
         assertEquals(0, res);
     }
+
+
+    @Test
+    public void spotSum() {
+        byte[][][] space = new byte[5][1][5];
+        HLayerIterator iterator = new HLayerIterator(space, 0);
+        iterator.set(1, 2, (byte) 1);
+
+        iterator.set(2, 1, (byte) 1);
+        iterator.set(2, 3, (byte) 1);
+
+        iterator.set(3, 1, (byte) 1);
+        iterator.set(3, 2, (byte) 1);
+        iterator.set(3, 3, (byte) 1);
+
+        iterator.set(4, 0, (byte) 1);
+        iterator.set(4, 1, (byte) 1);
+        iterator.set(4, 3, (byte) 1);
+        iterator.set(4, 4, (byte) 1);
+
+        System.out.println(iterator.toString());
+
+        assertEquals(7, iterator.spotSum(0,2));
+        assertEquals(4, iterator.spotSum(1,2));
+        assertEquals(1, iterator.spotSum(2,2));
+        assertEquals(3, iterator.spotSum(3,2));
+        assertEquals(5, iterator.spotSum(4,2));
+
+        for(int i=0; i<5; i++){
+            System.out.print(i+" ");
+            System.out.println(iterator.spotSum(i,2));
+        }
+
+
+
+    }
 }
