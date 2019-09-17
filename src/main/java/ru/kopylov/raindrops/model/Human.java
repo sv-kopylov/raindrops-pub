@@ -3,7 +3,7 @@ package ru.kopylov.raindrops.model;
 public class Human {
     InputDataSet ds = InputDataSet.getInstance();
 //    позиция на протяженности(длине пространства), указывает на слой перед самым носом человека
-    private  AbstractLayerIterator.Circle  position =  new AbstractLayerIterator.Circle(ds.getSpaceLenght(), 0);
+    private  Circle  position =  new Circle(ds.getSpaceLenght(), 0);
 
 //    количество капель, собранных человеком сверху
     private long topDrops = 0;
@@ -22,6 +22,10 @@ public class Human {
     }
     public double getCollectedDrops(){
         return (frontDrops + topDrops);
+    }
+
+    public int getPosition(){
+        return position.current();
     }
 
 }
