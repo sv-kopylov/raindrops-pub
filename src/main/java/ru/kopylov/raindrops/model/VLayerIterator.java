@@ -115,7 +115,6 @@ public class VLayerIterator extends AbstractLayerIterator{
         for (int i = 0; i < hLower; i++) {
             result+=wideArraySum(circle.previous());
         }
-        System.out.println("Spot sum end: result = "+ result);
         return result;
     }
 

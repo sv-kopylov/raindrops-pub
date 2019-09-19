@@ -49,4 +49,8 @@ public class RainSpace {
         }
 
     }
+
+    public int getTopLayerPointer(){
+        return topLayerPointer.current();
+    }
 }

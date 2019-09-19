@@ -13,6 +13,7 @@ public class Application {
     public static Logger logger = Logger.getLogger(Application.class);
 
     public void launch(){
+        logger.debug("Start launch");
         long time = 0;
         RainSpace rainSpace = new RainSpace();
         Human human = new Human();
@@ -22,20 +23,22 @@ public class Application {
 
         int distancePassed = 0;
 //        Заполняем пространство дождем
+        logger.debug("Start space filling by rain");
         for(int i=0;i<ds.getSpaceHeight();i++){
             rainSpace.updateTopLayer();
         }
 //          Начинаем эксперимент
-        int innerCounter=0;
+        int humanMovesCounter=0;
+        logger.debug("Start experiment");
         while(distancePassed<= ds.getDistance()){
             time++;
-            innerCounter++;
+            humanMovesCounter++;
             rainSpace.updateTopLayer();
             human.updateTop(rainSpace.getTopLayer());
-            if(innerCounter>=speedDifference){
+            if(humanMovesCounter>=speedDifference){
                 distancePassed++;
-                innerCounter=0;
-//                human.updateFront(rainSpace.getFrontVLayer());
+                humanMovesCounter=0;
+                human.updateFront(rainSpace.getFrontVLayer(human.getPosition()), rainSpace.getTopLayerPointer());
                 logger.trace(human.getCollectedDrops());
             }
 //            эксперимент завершен, сбор данных
@@ -45,9 +48,9 @@ public class Application {
         }
 
 
+    }
 
-
-
-
+    public static void main(String[] args) {
+        new Application().launch();
     }
 }

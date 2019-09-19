@@ -24,4 +24,8 @@ public class Human {
         return (frontDrops + topDrops);
     }
 
+    public int getPosition(){
+        return position.current();
+    }
+
 }
