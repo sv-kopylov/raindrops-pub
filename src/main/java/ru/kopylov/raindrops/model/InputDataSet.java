@@ -8,6 +8,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Properties;
+import java.util.Random;
 
 /**
  * набор переменных для эксперимента,
@@ -19,6 +20,8 @@ import java.util.Properties;
  */
 
 public class InputDataSet {
+    private long id = System.currentTimeMillis();
+
     public static Logger logger = Logger.getLogger(InputDataSet.class);
     private static InputDataSet instance = new InputDataSet();
 
@@ -32,8 +35,7 @@ public class InputDataSet {
     *  размер капли, выражен поперечным сечением от 0.5 до 7 мм
     *  https://ru.wikipedia.org/wiki/%D0%94%D0%BE%D0%B6%D0%B4%D1%8C#%D0%94%D0%BE%D0%B6%D0%B4%D0%B5%D0%B2%D1%8B%D0%B5_%D0%BA%D0%B0%D0%BF%D0%BB%D0%B8
     */
-    private double DropSize = 3.0;
-
+    private double DropSize;
     /**
      *     дистанция эксперимента в сантиметрах
      */
@@ -48,7 +50,7 @@ public class InputDataSet {
      *  после 5 скорость опять снижается
      *  (можно уточнить / добавить )
      */
-    private int DropFallingSpeed = Helper.DropFallingSpeed(DropSize); // не финальная но нет сеттера
+    private int DropFallingSpeed; // не финальная но нет сеттера
 
 
 
@@ -60,7 +62,7 @@ public class InputDataSet {
      *  max = 1219 см/сек
 
      */
-    private int HumanSpeed = 1219;
+    private int HumanSpeed;
 
 
     /** **** Размерность человека (рост, ширина, глубина) ****
@@ -140,7 +142,7 @@ public class InputDataSet {
      *       water in one  layer: 0,00000791 liters
      *       drops in one  layer: 0,55979369
      */
-    private double ProbabilityDropInCell = Helper.ProbabilityDropInCell();
+    private double ProbabilityDropInCell;
 
     /**
      * Каждую итерацию переберать весь слой неэкономично, как показывают графики капель в слое не очень много
@@ -168,6 +170,7 @@ public class InputDataSet {
     }
 
     private void updateDerivatives(){
+        id++; // при изменении любого параметра меняется идентификатор
         DropFallingSpeed = Helper.DropFallingSpeed(DropSize);
         DropsInLayer = SpaceLenght*(1.0/100)*SpaceWidth*(1.0/100)*Helper.DropsInLayer(RainIntensyty, DropSize);
         ProbabilityDropInCell = Helper.ProbabilityDropInCell();
@@ -229,6 +232,10 @@ public class InputDataSet {
         return DropsInLayer;
     }
 
+    public long getId() {
+        return id;
+    }
+
     private InputDataSet(){
         Properties ppts = new Properties();
         try(FileInputStream fis = new FileInputStream("model.properties")){
@@ -250,13 +257,14 @@ public class InputDataSet {
         this.RainIntensyty = getDoubleProperty(ppts, "RainIntensyty")/3600;
         this.HumanSpeed = getIntProperty(ppts, "HumanSpeed");
 
-
+        this.DropFallingSpeed = DropFallingSpeed = Helper.DropFallingSpeed(DropSize);
         this.SpaceHeight = HumanHeight+1;
         this.SpaceWidth = HumanWidth;
         this.SpaceLenght = Helper.SpaceLenght(SpaceHeight, DropFallingSpeed, HumanSpeed, HumanDepth);
         this.DropsInLayer = SpaceLenght*(1.0/100)
                             *SpaceWidth*(1.0/100)
                             *Helper.DropsInLayer(RainIntensyty, DropSize);
+        ProbabilityDropInCell = Helper.ProbabilityDropInCell();
 
     }
 
