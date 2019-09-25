@@ -13,12 +13,13 @@ public class Human {
 
 //    вычисляется количество капель в пятне слоя аккурат над человеком
     public void updateTop(HLayerIterator iter){
-        topDrops+=iter.spotSum(position.next(), ds.getHumanDepth());
+        topDrops+=iter.spotSum(position.current(), ds.getHumanDepth());
     }
 
 //    вычисляется число капель в пятне слоя с которым человек сталкивается двигаясь вперед
     public void updateFront(VLayerIterator iter, int topLayerPointer){
         frontDrops+=iter.spotSum(topLayerPointer, ds.getHumanHeight());
+        position.next();
     }
     public double getCollectedDrops(){
         return (frontDrops + topDrops);
@@ -28,4 +29,18 @@ public class Human {
         return position.current();
     }
 
+    public long getTopDrops() {
+        return topDrops;
+    }
+
+    public long getFrontDrops() {
+        return frontDrops;
+    }
+
+    public void reset(){
+        topDrops=0;
+        frontDrops=0;
+        position =  new Circle(ds.getSpaceLenght(), 0);
+
+    }
 }

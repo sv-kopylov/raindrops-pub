@@ -49,6 +49,17 @@ public class DataSource {
             throw new RuntimeException(e.getMessage());
         }
     }
+    public void closeConnection(){
+        try {
+            if (connection != null) {
+                if (!connection.isClosed())
+                connection.close();
+            }
+        } catch (SQLException e) {
+            logger.error("I can't close connection " + e.getMessage());
+            throw new RuntimeException(e.getMessage());
+        }
+    }
 
     public static void main(String[] args) throws IOException, ClassNotFoundException {
         DataSource ds = new DataSource();
@@ -56,7 +67,7 @@ public class DataSource {
         Files.createDirectories(ds.dbDir);
         ds.create();
     }
-
+@Deprecated
     public void create() throws ClassNotFoundException {
         String createDataSetTableQuery =
                 "CREATE CACHED TABLE dataset " +
@@ -85,9 +96,7 @@ public class DataSource {
                         "front_drops BIGINT," +
                         "FOREIGN KEY(dataset_id) REFERENCES dataset(id)" +
 
-                        ")";
-
-        try {
+                        ")";   try {
             Files.createDirectories(dbDir);
         } catch (IOException e) {
             logger.error("Cannot create directory for db: " + e.getMessage());
