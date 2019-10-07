@@ -6,11 +6,11 @@ import java.util.Random;
 
 public class RandomSeeder  {
     private int maxAttempts = 0;
+    Random rnd = new Random(System.currentTimeMillis());
 
 //    совпадений нет, но при большом значении плотности дождя эфективнее будет простой перебор
     public void reSeed(HLayerIterator iter){
         maxAttempts = iter.getMaxLenght()*iter.getMaxWidth();
-        Random rnd = new Random(System.currentTimeMillis());
         double drops = InputDataSet.getInstance().getDropsInLayer();
         int constDrops = (int) drops;
         double probabilty = drops - constDrops;

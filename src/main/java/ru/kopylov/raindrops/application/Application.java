@@ -7,6 +7,9 @@ import ru.kopylov.raindrops.model.RainSpace;
 
 
 import org.apache.log4j.Logger;
+import ru.kopylov.raindrops.persist.DataSource;
+import ru.kopylov.raindrops.persist.InputDataSetDAO;
+import ru.kopylov.raindrops.persist.ResultsDAO;
 
 
 public class Application {
@@ -14,22 +17,47 @@ public class Application {
 
     public void launch(){
         logger.debug("Start launch");
-        long time = 0;
+
         RainSpace rainSpace = new RainSpace();
         Human human = new Human();
-        InputDataSet ds = InputDataSet.getInstance();
+        InputDataSet dataSet = InputDataSet.getInstance();
 
-        int speedDifference = ds.getDropFallingSpeed() / ds.getHumanSpeed();
+        DataSource dataSource = new DataSource();
+        InputDataSetDAO inputDataSetDAO = new InputDataSetDAO(dataSource);
+        ResultsDAO resultsDAO = new ResultsDAO(dataSource);
 
-        int distancePassed = 0;
 //        Заполняем пространство дождем
         logger.debug("Start space filling by rain");
-        for(int i=0;i<ds.getSpaceHeight();i++){
+        for(int i=0;i<dataSet.getSpaceHeight();i++){
             rainSpace.updateTopLayer();
         }
-//          Начинаем эксперимент
+
+//        начало эксперимента
+        dataSet.setHumanSpeed(70);
+        runDistance(rainSpace, human, inputDataSetDAO, resultsDAO);
+
+        human.reset();
+
+        dataSet.setHumanSpeed(1200);
+        runDistance(rainSpace, human, inputDataSetDAO, resultsDAO);
+
+        inputDataSetDAO.shutDown();
+        resultsDAO.shutDown();
+        dataSource.closeConnection();
+
+    }
+
+    void runDistance(RainSpace rainSpace,  Human human, InputDataSetDAO inputDataSetDAO, ResultsDAO resultsDAO){
+        inputDataSetDAO.save();
+        long time = 0;
+        InputDataSet ds = InputDataSet.getInstance();
+        int speedDifference = ds.getDropFallingSpeed() / ds.getHumanSpeed();
+        int distancePassed = 0;
+
+        //          Начинаем эксперимент
         int humanMovesCounter=0;
         logger.debug("Start experiment");
+
         while(distancePassed<= ds.getDistance()){
             time++;
             humanMovesCounter++;
@@ -41,13 +69,10 @@ public class Application {
                 human.updateFront(rainSpace.getFrontVLayer(human.getPosition()), rainSpace.getTopLayerPointer());
                 logger.trace(human.getCollectedDrops());
             }
-//            эксперимент завершен, сбор данных
-
+            resultsDAO.save(human, time);
 
 
         }
-
-
     }
 
     public static void main(String[] args) {

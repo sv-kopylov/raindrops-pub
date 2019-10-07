@@ -53,4 +53,8 @@ public class RainSpace {
     public int getTopLayerPointer(){
         return topLayerPointer.current();
     }
+
+    public byte[][][] getSpace() {
+        return space;
+    }
 }
