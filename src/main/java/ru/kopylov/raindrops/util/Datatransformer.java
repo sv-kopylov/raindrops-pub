@@ -11,8 +11,15 @@ public class Datatransformer {
         return result;
     }
 
+    static double mpsecToKmH(double value){
+        double result = (value*3600)/(100*1000);
+        return result;
+    }
+
     public static void main(String[] args) {
         System.out.println(kmphTosmpsec(43.9));
+
+        System.out.println(mpsecToKmH(1219));
     }
 
 }
