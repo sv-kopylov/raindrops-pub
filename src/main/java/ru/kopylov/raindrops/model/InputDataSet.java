@@ -1,14 +1,12 @@
 package ru.kopylov.raindrops.model;
 
 import org.apache.log4j.Logger;
-import ru.kopylov.raindrops.application.Application;
 import ru.kopylov.raindrops.util.Helper;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Properties;
-import java.util.Random;
 
 /**
  * набор переменных для эксперимента,
@@ -115,7 +113,7 @@ public class InputDataSet {
 
 
     /**
-     * Вероятность появления капли в кубсеском сантиметре верхнего слоя
+     * Вероятность появления капли в кубическом сантиметре верхнего слоя
      *  Интенсивность I - 1 мм/ч это пленка тощиной 1 мм которая накапывает на 1 кв. м за 3600 секунд
      *  оцека объема в литрах = 10 * 10 * 0.01 = 1 литр в час или 1/3600 в секунду.
      *  Какому отрезку времени соответствует заполнение одного слоя ?
@@ -286,4 +284,14 @@ public class InputDataSet {
         }
     }
 
+    @Override
+    public String toString() {
+        return "InputDataSet{" +
+                "DropSize=" + DropSize +
+                ", DropFallingSpeed=" + DropFallingSpeed +
+                ", HumanSpeed=" + HumanSpeed +
+                ", RainIntensyty=" + RainIntensyty +
+                ", DropsInLayer=" + DropsInLayer +
+                '}';
+    }
 }

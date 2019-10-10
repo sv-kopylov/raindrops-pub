@@ -32,6 +32,9 @@ public class RainDensity {
         timePerLayer = 1.0/dropSpeed;
         waterPer1m2 = intensity*timePerLayer;
         dropsIn1m2 = waterPer1m2/dropVolume;
+        if(dropsIn1m2>10000){
+            throw new RuntimeException("Too mutch drops in 1 m^2");
+        }
     }
 
 
