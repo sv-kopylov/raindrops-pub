@@ -116,22 +116,24 @@ public class Experimentarium {
      */
     private void runDistance(){
         inputDataSetDAO.save();
+        double ticTime = 1.0 / dataSet.getDropFallingSpeed();
+        double movePerTic = ticTime*dataSet.getHumanSpeed();
+        double distancePassed = 0.0;
+        double milestones = 1.0;
         long time = 0;
-        int speedDifference = dataSet.getDropFallingSpeed() / dataSet.getHumanSpeed();
-        int distancePassed = 0;
-
-        int humanMovesCounter=0;
         logger.debug("Start running, speed: " + dataSet.getHumanSpeed());
 
-        while(distancePassed<= dataSet.getDistance()){
+        while(milestones<= dataSet.getDistance()){
             time++;
-            humanMovesCounter++;
+            distancePassed+=movePerTic;
             rainSpace.updateTopLayer();
             human.updateTop(rainSpace.getTopLayer());
-            if(humanMovesCounter>=speedDifference){
-                human.updateFront(rainSpace.getFrontVLayer(human.getPosition()), rainSpace.getTopLayerPointer());
-                distancePassed++;
-                humanMovesCounter=0;
+            if(distancePassed>=milestones){
+                int dif = (int)(distancePassed - milestones)+1;
+                for(int i=0; i<dif; i++){
+                    human.updateFront(rainSpace.getFrontVLayer(human.getPosition()), rainSpace.getTopLayerPointer());
+                    milestones++;
+                }
             }
             resultsDAO.save(human, time);
         }

@@ -5,26 +5,10 @@ import ru.kopylov.raindrops.model.InputDataSet;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public class InputDataSetDAO {
-    private DataSource repo;
-    private PreparedStatement sttm;
-    InputDataSet dataSet = InputDataSet.getInstance();
+public class InputDataSetDAO extends DAO {
 
     public InputDataSetDAO(DataSource repo) {
-        this.repo = repo;
-    }
-
-    private PreparedStatement getSttm(){
-        try {
-        if(sttm==null){
-             sttm = repo.getConnection().prepareStatement(query);
-            }  else if(sttm.isClosed()){
-            sttm = repo.getConnection().prepareStatement(query);
-        }
-        }catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return sttm;
+        super(repo);
     }
 
     private String query = "INSERT INTO dataset (" +
@@ -43,10 +27,8 @@ public class InputDataSetDAO {
             "probability_drop_in_cell," +
             "drops_in_layer ) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-
-
     public void save(){
-        PreparedStatement statement = getSttm();
+        PreparedStatement statement = getSttm(query);
         try {
             statement.setLong(1, dataSet.getId());
             statement.setDouble(2, dataSet.getDropSize());
@@ -63,7 +45,7 @@ public class InputDataSetDAO {
             statement.setDouble(13, dataSet.getProbabilityDropInCell());
             statement.setDouble(14, dataSet.getDropsInLayer());
 
-            sttm.executeUpdate();
+            statement.executeUpdate();
 
         } catch (SQLException e) {
             throw new RuntimeException(e.getMessage());
@@ -71,11 +53,8 @@ public class InputDataSetDAO {
 
     }
 
-    public void shutDown(){
-        try {
-            sttm.close();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
+
+
+
+
 }

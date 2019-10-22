@@ -6,30 +6,14 @@ import ru.kopylov.raindrops.model.InputDataSet;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public class ResultsDAO {
-    private DataSource repo;
-    private PreparedStatement sttm;
-    InputDataSet dataSet = InputDataSet.getInstance();
+public class ResultsDAO extends DAO {
+
 
     public ResultsDAO(DataSource repo) {
-        this.repo = repo;
+        super(repo);
     }
 
-    private PreparedStatement getSttm(){
-        try {
-            if(sttm==null){
-                sttm = repo.getConnection().prepareStatement(query);
-            }  else if(sttm.isClosed()){
-                sttm = repo.getConnection().prepareStatement(query);
-            }
-        }catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return sttm;
-    }
-
-
-    private String query = "INSERT INTO results (" +
+     private String query = "INSERT INTO results (" +
             "iteration, " +
             "dataset_id," +
             "cur_distance," +
@@ -38,7 +22,7 @@ public class ResultsDAO {
             " values (?, ?, ?, ?, ?)";
 
     public void save(Human human, long iteration){
-        PreparedStatement statement = getSttm();
+        PreparedStatement statement = getSttm(query);
         try {
             statement.setLong(1, iteration);
             statement.setLong(2, dataSet.getId());
@@ -46,7 +30,7 @@ public class ResultsDAO {
             statement.setLong(4,human.getTopDrops());
             statement.setLong(5, human.getFrontDrops());
 
-            sttm.executeUpdate();
+            statement.executeUpdate();
 
         } catch (SQLException e) {
             throw new RuntimeException(e.getMessage());
@@ -54,11 +38,4 @@ public class ResultsDAO {
 
     }
 
-    public void shutDown(){
-        try {
-            sttm.close();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
 }

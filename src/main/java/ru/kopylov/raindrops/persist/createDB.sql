@@ -27,3 +27,43 @@
                         front_drops BIGINT,
                         FOREIGN KEY(dataset_id) REFERENCES dataset(id)
                         );
+
+                        /*
+-- Показатели:
+-- забег
+-- - объем полученной воды;
+-- - количество капель всего;
+-- - количество (объем) капель сверху всего;
+-- - количество (объем) капель спереди всего;
+-- - средний прирост за один тик;
+-- - средний прирост за один тик (не включая фронтальные);
+-- - средний приросn за одно горизонтальное смещение (всего / только горизонтальные/ только фронтальные)
+-- сет
+-- - разница полученного объема на разных скоростях.
+-- - другие разницы
+
+ */
+
+                 CREATE CACHED TABLE total
+                        (
+                        id BIGINT IDENTITY,
+                        dataset_id BIGINT,
+
+                        drop_volume DOUBLE,
+                        total_volume DOUBLE,
+
+                        total_drops BIGINT,
+                        total_top BIGINT,
+                        total_front BIGINT,
+
+                        delta_per_tic_total DOUBLE,
+                        delta_per_tic_top DOUBLE,
+                        delta_per_step DOUBLE,
+                        total_tics INT,
+
+                        delta_per_step_top DOUBLE,
+                        delta_per_step_front DOUBLE,
+
+
+                        FOREIGN KEY(dataset_id) REFERENCES dataset(id)
+                        );
