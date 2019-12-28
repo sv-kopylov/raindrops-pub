@@ -17,7 +17,7 @@ public class Experimentarium {
 
     private int[] humanSpeeds = {
             61,  // прогулочный шаг
-            640, // 23 км/ч довольно энергичный бег
+            640, // 23 км/ч очень энергичный бег
             1219 // рекорд скорости
     };
 
@@ -37,6 +37,7 @@ public class Experimentarium {
     };
 
 
+
     private RainSpace rainSpace;
     private Human human;
     private InputDataSet dataSet;
@@ -44,6 +45,20 @@ public class Experimentarium {
     private InputDataSetDAO inputDataSetDAO;
     private ResultsDAO resultsDAO;
 
+    /**
+     * Top level complette all experiments
+     *
+     */
+    public void launch(){
+        init();
+        completeDifferentIntensityesAndDropsizes();
+        end();
+
+    }
+
+    /**
+     * Prepairing envinronment
+     */
     public void init(){
         rainSpace = new RainSpace();
         human = new Human();
@@ -53,38 +68,22 @@ public class Experimentarium {
         resultsDAO = new ResultsDAO(dataSource);
     }
 
+    /**
+     * Realizing resources
+     */
     public void end(){
         inputDataSetDAO.shutDown();
         resultsDAO.shutDown();
         dataSource.closeConnection();
     }
 
-    public void launch(){
-        init();
-        completeDifferentIntensityesAndDropsizes();
-        end();
-
-    }
-
-    /**
-     * Заполняем пространство дождем
-     */
-    void fillSpaceByRain(){
-
-        logger.debug("Start space filling by rain");
-        for(int i=0;i<InputDataSet.getInstance().getSpaceHeight();i++){
-            rainSpace.updateTopLayer();
-        }
-    }
-
-    /********************************   1 сет экспериментов    **************************************
+    /********************************   вся серия экспериментов    **************************************
      * 1)	Интенсивность:  При постоянном размере капли проводится несколько сетов с различной интенсивностью.
      * Цель – нужно ли менять стратегию при разной интенсивности.
      */
     private void completeDifferentIntensityesAndDropsizes(){
 
         for(double dropSize: dropSizes) {
-
             logger.debug("START SET WITN DROPSIZE: " + dropSize);
             dataSet.setDropSize(dropSize);
             for (double inten : intensities) {
@@ -98,6 +97,18 @@ public class Experimentarium {
             }
         }
     }
+
+     /**
+     * Заполняем пространство дождем
+     */
+    void fillSpaceByRain(){
+
+        logger.debug("Start space filling by rain");
+        for(int i=0;i<InputDataSet.getInstance().getSpaceHeight();i++){
+            rainSpace.updateTopLayer();
+        }
+    }
+
 
     /**
      * Серия забегов на разных скоростях, но с константными параметрами среды
@@ -132,12 +143,26 @@ public class Experimentarium {
                 int dif = (int)(distancePassed - milestones)+1;
                 for(int i=0; i<dif; i++){
                     human.updateFront(rainSpace.getFrontVLayer(human.getPosition()), rainSpace.getTopLayerPointer());
-                    milestones++;
+                    milestones+=dif;
                 }
             }
             resultsDAO.save(human, time);
         }
         logger.debug("Running completed");
+    }
+
+
+
+    private void completeDifferentIntensityesAndDropsizes1(){
+        logger.debug("START SET");
+        dataSet.setDropSize(dropSizes[3]);
+        dataSet.setRainIntensyty(intensities[0]);
+        long start = System.currentTimeMillis();
+        fillSpaceByRain();
+        completeDifferentSpeedRuns();
+        logger.debug("elapsed time: "+ (System.currentTimeMillis()-start));
+        logger.debug(dataSet.toString());
+
     }
 
     public static void main(String[] args) {

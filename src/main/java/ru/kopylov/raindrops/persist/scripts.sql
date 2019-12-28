@@ -1,6 +1,10 @@
 --truncate table results;
---truncate table total;
+-- truncate table total;
 --truncate table dataset;
+--
+--drop table results;
+--drop table total;
+--drop table dataset;
 
 --drop table total;
 
@@ -52,6 +56,7 @@ delta_per_step,
 delta_per_step_top,
 delta_per_step_front,
 drop_falling_speed,
+human_speed human_speed_smsec,
 total_tics,
 drop_volume,
 drops_in_layer
@@ -60,7 +65,7 @@ where t.dataset_id = d.id
 order by
 rain_intensyty,
 dropsize,
-human_speed
+human_speed;
 
 -- TODO исправить интенсити (ошибка в слове)
 -- интенсивность - размер капли - скорость
@@ -75,4 +80,105 @@ where t.dataset_id = d.id
 order by
 rain_intensyty,
 dropsize,
-human_speed
+human_speed;
+
+
+
+-- интенсивность - скорость - размер капли
+select
+dataset_id,
+rain_intensyty*3600 intensity,
+(human_speed*3600)/100000 human_speed,
+dropsize,
+total_volume*1000 total_volume,
+drops_in_layer,
+(drop_falling_speed*3600)/100000 drop_speed,
+total_drops
+from total t, dataset d
+where t.dataset_id = d.id
+order by
+rain_intensyty,
+human_speed,
+dropsize;
+
+
+-- интенсивность - размер капли - скорость - для соотношения перед/верх
+select
+dataset_id,
+rain_intensyty*3600 intensity,
+dropsize,
+(human_speed*3600)/100000 human_speed,
+total_top,
+total_front
+from total t, dataset d
+where t.dataset_id = d.id
+order by
+rain_intensyty,
+dropsize,
+human_speed;
+
+-- интенсивность - скорость - размер капли -  итоговый объем
+select
+rain_intensyty*3600 intensity,
+(human_speed*3600)/100000 human_speed,
+drop_falling_speed,
+total_volume*1000 total_volume,
+dropsize
+from total t, dataset d
+where t.dataset_id = d.id
+order by
+rain_intensyty,
+human_speed,
+dropsize;
+
+select
+dataset_id,
+(human_speed*3600)/100000 human_speed,
+rain_intensyty*3600 intensity,
+dropsize,
+drop_falling_speed,
+total_top,
+total_front,
+total_volume*1000 total_volume
+from total t, dataset d
+where t.dataset_id = d.id
+order by
+human_speed,
+rain_intensyty,
+dropsize;
+
+select
+rain_intensyty*3600 intensity,
+dropsize,
+(human_speed*3600)/100000 human_speed,
+total_top,
+total_front
+from total t, dataset d
+where t.dataset_id = d.id
+order by
+rain_intensyty,
+dropsize,
+human_speed;
+
+select
+(human_speed*3600)/100000 human_speed,
+rain_intensyty*3600 intensity,
+drop_falling_speed,
+total_top,
+total_front,
+total_volume*1000 total_volume
+from total t, dataset d
+where t.dataset_id = d.id
+order by
+human_speed,
+rain_intensyty,
+drop_falling_speed;
+
+select count(*) from re;
+
+
+
+
+
+
+select * from dataset where id = 1576722103747;
