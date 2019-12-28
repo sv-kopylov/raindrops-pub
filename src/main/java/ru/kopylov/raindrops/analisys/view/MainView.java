@@ -10,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
+import javafx.scene.shape.DrawMode;
 import javafx.scene.shape.Sphere;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Translate;
@@ -28,26 +29,35 @@ public class MainView extends Application {
     @Override
     public void start(Stage stage) {
         stage.setTitle("raindrops");
+        InputDataSet dataSet = InputDataSet.getInstance();
 //
-//        Box box = new Box(50, 70, 100);
-//        box.setTranslateX(0);
-//        box.setTranslateY(0);
-//        box.setTranslateZ(0);
+        Box box = new Box(dataSet.getHumanWidth()*3, dataSet.getHumanHeight()*3, dataSet.getHumanDepth()*3);
+        box.setTranslateX(dataSet.getHumanWidth()*1.5);
+        box.setTranslateY(dataSet.getHumanHeight()*1.5);
+        box.setTranslateZ(dataSet.getHumanDepth()*1.5);
+        PhongMaterial mat4 = new PhongMaterial();
+        mat4.setDiffuseColor(Color.RED);
+        box.setMaterial(mat4);
+//        box.setDrawMode(DrawMode.FILL);
 
         ArrayList<Sphere> drops = createDrops();
         Sphere[] dropsArray = new Sphere[drops.size()];
         drops.toArray(dropsArray);
 
-        Group root = new Group(dropsArray);
+        Group root = new Group();
+        root.getChildren().add(box);
+        root.getChildren().addAll(drops);
 
-        Scene scene = new Scene(root, 600, 300);
+
+        Scene scene = new Scene(root, 630, 630, Color.gray(0.75));
+
 
 
         Translate pivot = new Translate();
 
-        pivot.setX(50);
-        pivot.setY(50);
-        pivot.setZ(50);
+        pivot.setX(72);
+        pivot.setY(100);
+        pivot.setZ(129);
 
         Rotate yRotate = new Rotate(0, Rotate.Y_AXIS);
 
@@ -93,6 +103,14 @@ public class MainView extends Application {
     public static ArrayList<Sphere> createDrops(){
         RainSpace rainSpace = new RainSpace();
         InputDataSet dataSet = InputDataSet.getInstance();
+        System.out.println(dataSet.getSpaceWidth());
+        System.out.println(dataSet.getSpaceHeight());
+        System.out.println(dataSet.getSpaceLenght());
+        dataSet.setDropSize(1.2);
+        dataSet.setRainIntensyty(50);
+        System.out.println(dataSet.getSpaceWidth()*1.5);
+        System.out.println(dataSet.getSpaceHeight()*1.5);
+        System.out.println(dataSet.getSpaceLenght()*1.5);
         for(int i=0;i<dataSet.getSpaceHeight();i++){
             rainSpace.updateTopLayer();
         }
@@ -109,7 +127,8 @@ public class MainView extends Application {
                         sphere.setTranslateX(k*3);
                         sphere.setTranslateY(j*3);
                         sphere.setTranslateZ(i*3);
-                        sphere.setMaterial(new PhongMaterial(Color.AQUA));
+                        PhongMaterial mat = new PhongMaterial(Color.AQUA);
+                        sphere.setMaterial(mat);
                         drops.add(sphere);
                     }
                 }
