@@ -14,7 +14,7 @@ import java.sql.Statement;
 
 public class DataSource {
     public static Logger logger = Logger.getLogger(DataSource.class);
-    private String dbname = "raindrops";
+    private String dbname = "raindrops1";
     private Path dbDir = Paths.get("results\\db");
 //    private String url = "jdbc:hsqldb:file:" + dbDir.toAbsolutePath().toString() + "/" + dbname;
     private String url = "jdbc:hsqldb:hsql://localhost/" + dbname;

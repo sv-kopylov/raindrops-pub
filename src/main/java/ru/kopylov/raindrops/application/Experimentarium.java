@@ -16,22 +16,23 @@ public class Experimentarium {
     public static Logger logger = Logger.getLogger(Experimentarium.class);
 
     private int[] humanSpeeds = {
-            61,  // прогулочный шаг
+//            61,  // прогулочный шаг
             640, // 23 км/ч очень энергичный бег
             1219 // рекорд скорости
     };
 
     private double intensities[] = {
-            1.0, // моросящий дождь
-            50.0, // ливень
-            100.0 // катастрофа
+            10
+//            1.0, // моросящий дождь
+//            50.0, // ливень
+//            100.0 // катастрофа
 
     };
 
     private double dropSizes[] = {
-            0.6, // очень мелкий, моросящий
-            1.4, // затяжной
-            5.0, // ливень, каких мало
+//            0.6, // очень мелкий, моросящий
+//            1.4, // затяжной
+//            5.0, // ливень, каких мало
             7.0 // чудо природы
 
     };
@@ -51,7 +52,8 @@ public class Experimentarium {
      */
     public void launch(){
         init();
-        completeDifferentIntensityesAndDropsizes();
+        completteManyTimes(10);
+//        completeDifferentIntensityesAndDropsizes();
         end();
 
     }
@@ -77,9 +79,16 @@ public class Experimentarium {
         dataSource.closeConnection();
     }
 
+    private void completteManyTimes(int num){
+        for(int i=0; i<num; i++){
+            completeDifferentIntensityesAndDropsizes();
+        }
+    }
+
     /********************************   вся серия экспериментов    **************************************
      * 1)	Интенсивность:  При постоянном размере капли проводится несколько сетов с различной интенсивностью.
      * Цель – нужно ли менять стратегию при разной интенсивности.
+     *
      */
     private void completeDifferentIntensityesAndDropsizes(){
 
