@@ -82,6 +82,21 @@ rain_intensyty,
 dropsize,
 human_speed;
 
+-- интенсивность - скорость - размер капли
+select
+dropsize,
+(human_speed*3600)/100000 human_speed,
+(drop_falling_speed*3600)/100000 drop_speed,
+total_volume*1000 total_volume,
+drops_in_layer
+from total t, dataset d
+where t.dataset_id = d.id
+order by
+dropsize,
+human_speed,
+drop_speed;
+
+
 
 
 -- интенсивность - скорость - размер капли
